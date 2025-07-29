@@ -1,38 +1,77 @@
-# Electriccitybill.java
-import java.util.*;
+import java.util.Scanner;
 
-public class SimpleContact {
-    public static void main(String[] args) {
-        ArrayList<String> contacts = new ArrayList<>();
+class ElectricityBill {
+    int consumerNo;
+    String consumerName;
+    int prevReading;
+    int currReading;
+    String ebConnectionType; // "domestic" or "commercial"
+
+    void getDetails() {
         Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Consumer Number: ");
+        consumerNo = sc.nextInt();
+        sc.nextLine(); // consume newline
+        System.out.print("Enter Consumer Name: ");
+        consumerName = sc.nextLine();
+        System.out.print("Enter Previous Month Reading: ");
+        prevReading = sc.nextInt();
+        System.out.print("Enter Current Month Reading: ");
+        currReading = sc.nextInt();
+        sc.nextLine(); // consume newline
+        System.out.print("Enter EB Connection Type (domestic/commercial): ");
+        ebConnectionType = sc.nextLine().toLowerCase();
+    }
 
-        // Add contacts
-        contacts.add("Ravi");
-        contacts.add("Priya");
-        contacts.add("Arun");
+    int calculateUnits() {
+        return currReading - prevReading;
+    }
 
-        // Display all contacts
-        System.out.println("All Contacts: " + contacts);
+    double calculateBill() {
+        int units = calculateUnits();
+        double amount = 0;
 
-        // Search a contact
-        System.out.print("Enter name to search: ");
-        String name = sc.nextLine();
-        if (contacts.contains(name)) {
-            System.out.println(name + " found in contacts.");
-        } else {
-            System.out.println(name + " not found.");
+        if (ebConnectionType.equals("domestic")) {
+            if (units <= 100) {
+                amount = units * 1;
+            } else if (units <= 200) {
+                amount = (100 * 1) + (units - 100) * 2.5;
+            } else if (units <= 500) {
+                amount = (100 * 1) + (100 * 2.5) + (units - 200) * 4;
+            } else {
+                amount = (100 * 1) + (100 * 2.5) + (300 * 4) + (units - 500) * 6;
+            }
+        } else if (ebConnectionType.equals("commercial")) {
+            if (units <= 100) {
+                amount = units * 2;
+            } else if (units <= 200) {
+                amount = (100 * 2) + (units - 100) * 4.5;
+            } else if (units <= 500) {
+                amount = (100 * 2) + (100 * 4.5) + (units - 200) * 6;
+            } else {
+                amount = (100 * 2) + (100 * 4.5) + (300 * 6) + (units - 500) * 7;
+            }
         }
 
-        // Delete a contact
-        System.out.print("Enter name to delete: ");
-        String del = sc.nextLine();
-        if (contacts.remove(del)) {
-            System.out.println(del + " deleted successfully.");
-        } else {
-            System.out.println(del + " not found.");
-        }
+        return amount;
+    }
 
-        // Show updated contact list
-        System.out.println("Updated Contacts: " + contacts);
+    void displayBill() {
+        int units = calculateUnits();
+        double billAmount = calculateBill();
+        System.out.println("\n----- Electricity Bill -----");
+        System.out.println("Consumer No   : " + consumerNo);
+        System.out.println("Consumer Name : " + consumerName);
+        System.out.println("Connection Type : " + ebConnectionType);
+        System.out.println("Units Consumed  : " + units);
+        System.out.println("Total Bill Amount: Rs. " + billAmount);
+    }
+}
+
+public class ElectricityBillMain {
+    public static void main(String[] args) {
+        ElectricityBill bill = new ElectricityBill();
+        bill.getDetails();
+        bill.displayBill();
     }
 }
