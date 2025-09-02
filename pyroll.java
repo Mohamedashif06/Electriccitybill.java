@@ -1,6 +1,4 @@
 import java.util.Scanner;
-
-// ----------- Stack Interface -----------
 interface Stack<T> {
     void push(T item);
     T pop();
@@ -8,8 +6,6 @@ interface Stack<T> {
     boolean isEmpty();
     int size();
 }
-
-// ----------- Array-based Stack Implementation -----------
 class ArrayStack<T> implements Stack<T> {
     private Object[] arr;
     private int top;
