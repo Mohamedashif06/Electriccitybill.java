@@ -1,7 +1,5 @@
 
 import java.util.*;
-
-// Simple Stack using ArrayList
 class MyStack {
     private ArrayList<String> stack = new ArrayList<>();
 
